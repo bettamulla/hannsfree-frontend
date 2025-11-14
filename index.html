@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HannsFree – Beauty Brander</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="hero">
+    <h1>HannsFree Beauty Brander</h1>
+    <p class="subtitle">
+      Build a scroll-stopping beauty brand in seconds — soft pink, glossy, modern.
+    </p>
+  </header>
+
+  <main class="container">
+    <section class="form-card">
+      <h2>Generate Your Brand</h2>
+      <form id="brandForm">
+        <label>Brand Name (optional)</label>
+        <input id="brandName" type="text" placeholder="e.g., Plush Aesthetics" />
+
+        <label>Beauty Niche</label>
+        <select id="niche">
+          <option value="lashes">Lash Tech</option>
+          <option value="brows">Brow Artist</option>
+          <option value="aesthetics">Aesthetician</option>
+          <option value="makeup">Makeup Artist</option>
+          <option value="skincare">Skincare Brand</option>
+          <option value="hair">Hair Stylist</option>
+        </select>
+
+        <label>Brand Tone</label>
+        <select id="tone">
+          <option value="soft feminine">Soft & Feminine</option>
+          <option value="luxury modern">Luxury & Modern</option>
+          <option value="clean minimal">Clean & Minimal</option>
+          <option value="baddie confident">Baddie & Confident</option>
+        </select>
+
+        <label>Target Audience</label>
+        <input id="audience" type="text" placeholder="e.g., Women 18–35" />
+
+        <label>Visual / Image Prompt</label>
+        <input id="imagePrompt" type="text" placeholder="e.g., blush pink glossy vibe" />
+
+        <button type="submit" class="generate-btn">Generate Brand Pack</button>
+      </form>
+
+      <div id="loading" class="loader">Creating magic… hang tight.</div>
+    </section>
+
+    <section id="brandResults" class="results"></section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active">Generate</button>
+    <button class="nav-btn">Results</button>
+    <button class="nav-btn">Info</button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
