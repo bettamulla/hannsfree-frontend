@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <title>HannsFree – Beauty Brander</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+
   <header class="hero">
     <h1>HannsFree Beauty Brander</h1>
     <p class="subtitle">
@@ -16,8 +18,11 @@
   </header>
 
   <main class="container">
-    <section class="form-card">
+
+    <!-- Generate section -->
+    <section class="form-card" id="generateSection">
       <h2>Generate Your Brand</h2>
+
       <form id="brandForm">
         <label>Brand Name (optional)</label>
         <input id="brandName" type="text" placeholder="e.g., Plush Aesthetics" />
@@ -52,13 +57,31 @@
       <div id="loading" class="loader">Creating magic… hang tight.</div>
     </section>
 
+    <!-- Results section -->
     <section id="brandResults" class="results"></section>
+
+    <!-- Info section -->
+    <section id="infoSection" class="info-card">
+      <h2>How to Use HannsFree Beauty Brander</h2>
+      <p>
+        1. Fill in your niche, tone and audience.<br>
+        2. Hit <strong>Generate Brand Pack</strong>.<br>
+        3. Scroll through name ideas, taglines, hooks, captions and colour palette.<br>
+        4. Tap <strong>Copy</strong> on anything you want to paste into Instagram, Canva, or your notes.
+      </p>
+      <p>
+        The generator is tuned for beauty brands (lashes, brows, aesthetics, makeup, skincare, hair)
+        with a soft, modern and premium feel.
+      </p>
+    </section>
+
   </main>
 
+  <!-- Bottom App Navigation -->
   <nav class="bottom-nav">
-    <button class="nav-btn active">Generate</button>
-    <button class="nav-btn">Results</button>
-    <button class="nav-btn">Info</button>
+    <button class="nav-btn active" data-target="generate">Generate</button>
+    <button class="nav-btn" data-target="results">Results</button>
+    <button class="nav-btn" data-target="info">Info</button>
   </nav>
 
   <script src="app.js"></script>
