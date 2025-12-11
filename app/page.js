@@ -1,41 +1,49 @@
 "use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import CreateBrand from "./components/CreateBrand";
 import BrandCard from "./components/BrandCard";
 
 export default function Page() {
   const [brands, setBrands] = useState([]);
 
-  async function loadBrands() {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND}/brands`);
-      setBrands(res.data);
-    } catch (error) {
-      console.log("Backend not connected");
-    }
-  }
-
-  useEffect(() => {
-    loadBrands();
-  }, []);
+  const handleCreate = (name) => {
+    if (!name.trim()) return;
+    setBrands([...brands, { name }]);
+  };
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold">HanssFree — Brand Engine</h1>
-
-      <CreateBrand refresh={loadBrands} />
-
-      <div className="space-y-4">
-        {brands.length === 0 && (
-          <p className="text-zinc-500 text-sm">
-            No brands created yet. Create one above.
+    <div className="min-h-screen bg-[#f8f9fb] text-[#111] px-6 py-10">
+      <div className="max-w-lg mx-auto space-y-10">
+        
+        {/* HEADER */}
+        <header className="space-y-2 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            HannsFree — Brand Engine
+          </h1>
+          <p className="text-sm text-gray-500">
+            Simple, fast brand ideation & automation.
           </p>
-        )}
+        </header>
 
-        {brands.map(brand => (
-          <BrandCard key={brand.id} brand={brand} refresh={loadBrands} />
-        ))}
+        {/* CREATE BRAND CARD */}
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+          <h2 className="text-lg font-medium mb-3">Create Brand</h2>
+          <CreateBrand onCreate={handleCreate} />
+        </div>
+
+        {/* BRAND LIST */}
+        <div className="space-y-3">
+          {brands.length === 0 ? (
+            <p className="text-center text-gray-500 text-sm">
+              No brands created yet. Start by adding one above.
+            </p>
+          ) : (
+            brands.map((brand, i) => (
+              <BrandCard key={i} brand={brand} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
