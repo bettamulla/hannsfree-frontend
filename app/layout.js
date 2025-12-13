@@ -1,0 +1,14 @@
+export const metadata = {
+  title: "HannsFree",
+  description: "Autonomous Brand Engine",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+      </body>
+    </html>
+  );
+}
