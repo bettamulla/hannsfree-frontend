@@ -15,9 +15,7 @@ function generate(seed, count, style) {
     suffixesModern;
 
   const out = [];
-  for (let i = 0; i < count; i++) {
-    out.push(`${s}${list[i % list.length]}`);
-  }
+  for (let i = 0; i < count; i++) out.push(`${s}${list[i % list.length]}`);
   return out;
 }
 
@@ -141,77 +139,5 @@ export default function Page() {
         </div>
       </div>
     </main>
-  );
-}
-    style={{ marginLeft: 8 }}
-  >
-    {[12, 24, 36, 48].map(n => (
-      <option key={n} value={n}>{n}</option>
-    ))}
-  </select>
-</div>
-
-            <span>How many</span>
-            <select value={count} onChange={(e) => setCount(Number(e.target.value))}>
-              {[12, 24, 36, 48].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button className="btnGhost" onClick={() => setResults([])} disabled={results.length === 0}>
-            Clear
-          </button>
-
-          <button className="btnGhost" onClick={copyAll} disabled={results.length === 0}>
-            Copy all
-          </button>
-        </div>
-
-        {domainHints.length > 0 && (
-          <div className="hint">
-            <span className="hintLabel">Quick domains:</span>
-            <div className="chips">
-              {domainHints.map((d) => (
-                <span key={d} className="chip">
-                  {d}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
-
-      <section className="results">
-        <div className="resultsHeader">
-          <div className="resultsTitle">Results</div>
-          <div className="resultsSub">{results.length ? `${results.length} ideas` : "Generate to see ideas"}</div>
-        </div>
-
-        <div className="grid">
-          {results.map((r, i) => (
-            <button
-              key={`${r}-${i}`}
-              className="resultCard"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(r);
-                } catch {}
-              }}
-              title="Click to copy"
-            >
-              <div className="resultName">{r}</div>
-              <div className="resultMeta">tap to copy</div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <footer className="foot">
-        <span>Next: AI mode + Stripe paywall + saved brand kits.</span>
-      </footer>
-    </div>
   );
 }
