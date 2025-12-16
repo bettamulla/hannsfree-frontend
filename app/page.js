@@ -55,7 +55,19 @@ export default function Page() {
             </select>
           </label>
 
-          <label className="field">
+          <div style={{ marginTop: 12 }}>
+  <span>How many</span>
+  <select
+    value={count}
+    onChange={(e) => setCount(Number(e.target.value))}
+    style={{ marginLeft: 8 }}
+  >
+    {[12, 24, 36, 48].map(n => (
+      <option key={n} value={n}>{n}</option>
+    ))}
+  </select>
+</div>
+
             <span>How many</span>
             <select value={count} onChange={(e) => setCount(Number(e.target.value))}>
               {[12, 24, 36, 48].map((n) => (
