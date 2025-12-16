@@ -1,143 +1,116 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
-function generate(seed, count, style) {
-  const s = (seed || "Cognia").trim();
-
-  const suffixesModern = [" Labs", " Studio", " Co", " Systems", " Group", " Works", " Network", " Supply"];
-  const suffixesLuxury = [" Atelier", " Maison", " Collective", " Gallery", " Society", " Bureau", " House"];
-  const suffixesPlayful = [" Club", " Corner", " Bazaar", " Market", " Kitchen", " Lane", " Loft", " Room"];
-
-  const list =
-    style === "Luxury" ? suffixesLuxury :
-    style === "Playful" ? suffixesPlayful :
-    suffixesModern;
-
-  const out = [];
-  for (let i = 0; i < count; i++) out.push(`${s}${list[i % list.length]}`);
-  return out;
-}
+import { buildBrandIdeas } from "../lib/brandEngine";
+import { buildBrandKitText, downloadText } from "../lib/exportKit";
 
 export default function Page() {
   const [seed, setSeed] = useState("");
   const [style, setStyle] = useState("Modern");
-  const [count, setCount] = useState(24);
+  const [count, setCount] = useState(12);
 
-  const results = useMemo(() => {
+  const ideas = useMemo(() => {
     if (!seed.trim()) return [];
-    return generate(seed, count, style);
-  }, [seed, count, style]);
+    return buildBrandIdeas(seed, style, count);
+  }, [seed, style, count]);
 
   return (
-    <main style={{ minHeight: "100vh", padding: 28, fontFamily: "ui-serif, Georgia, serif" }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h1 style={{ fontSize: 42, margin: 0 }}>HannsFree</h1>
-        <p style={{ opacity: 0.8, marginTop: 8 }}>Brand names that feel like they already exist.</p>
+    <main className="container">
+      <div className="hero">
+        <div>
+          <h1 className="h1">HannsFree</h1>
+          <p className="sub">Brand names that feel like they already exist — plus mini brand kits.</p>
+        </div>
+        <div className="small">v1: generator + kits • next: AI mode + saved accounts + Stripe</div>
+      </div>
 
-        <div style={{ marginTop: 18, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-          <label>
-            <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 6 }}>Brand seed</div>
+      <section className="panel">
+        <div className="row">
+          <label className="label">
+            Brand seed
             <input
+              className="input"
               value={seed}
               onChange={(e) => setSeed(e.target.value)}
               placeholder="e.g. Cognia, Puffer, Bettamul"
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: "1px solid rgba(255,255,255,0.18)",
-                background: "rgba(255,255,255,0.06)",
-                color: "white",
-                width: 260,
-                outline: "none",
-              }}
             />
           </label>
 
-          <label>
-            <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 6 }}>Style</div>
-            <select
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: "1px solid rgba(255,255,255,0.18)",
-                background: "rgba(255,255,255,0.06)",
-                color: "white",
-                outline: "none",
-              }}
-            >
-              <option value="Modern">Modern</option>
-              <option value="Luxury">Luxury</option>
-              <option value="Playful">Playful</option>
+          <label className="label">
+            Style
+            <select className="select" value={style} onChange={(e) => setStyle(e.target.value)}>
+              <option>Modern</option>
+              <option>Luxury</option>
+              <option>Playful</option>
             </select>
           </label>
 
-          <label>
-            <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 6 }}>How many</div>
-            <select
-              value={count}
-              onChange={(e) => setCount(Number(e.target.value))}
-              style={{
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: "1px solid rgba(255,255,255,0.18)",
-                background: "rgba(255,255,255,0.06)",
-                color: "white",
-                outline: "none",
-              }}
-            >
-              {[12, 24, 36, 48].map((n) => (
+          <label className="label">
+            How many
+            <select className="select" value={count} onChange={(e) => setCount(Number(e.target.value))}>
+              {[12, 24, 36].map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
           </label>
 
-          <button
-            onClick={() => setSeed((v) => v.trim())}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid rgba(255,255,255,0.18)",
-              background: "rgba(255,255,255,0.12)",
-              color: "white",
-              cursor: "pointer",
-              marginTop: 18,
-            }}
-          >
+          <button className="btn" onClick={() => setSeed((s) => s.trim())}>
             Generate
           </button>
         </div>
 
-        <div style={{ marginTop: 22 }}>
-          <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 10 }}>Results</div>
+        <div className="footerNote">
+          Tip: short seeds hit harder (one word). Example: “Cognia”, “Bettamul”, “Hanns”.
+        </div>
+      </section>
 
-          {!seed.trim() ? (
-            <div style={{ opacity: 0.7 }}>Type a seed and hit Generate.</div>
-          ) : (
-            <div style={{ display: "grid", gap: 10 }}>
-              {results.map((r) => (
-                <div
-                  key={r}
-                  style={{
-                    padding: 12,
-                    borderRadius: 12,
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    background: "rgba(255,255,255,0.05)",
-                  }}
-                >
-                  {r}
+      <section className="panel">
+        <div className="small">Results</div>
+
+        {!seed.trim() ? (
+          <div style={{ marginTop: 10 }} className="small">Type a seed and press Generate.</div>
+        ) : (
+          <div className="grid">
+            {ideas.map((idea) => (
+              <div key={idea.name} className="card">
+                <div className="cardTitle">{idea.name}</div>
+                <div className="small">{idea.tagline}</div>
+
+                <div className="badges">
+                  <span className="badge">{idea.fontPair[0]}</span>
+                  <span className="badge">{idea.fontPair[1]}</span>
+                  <span className="badge">{idea.domains[0]}</span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
 
-        <div style={{ marginTop: 18, opacity: 0.7, fontSize: 12 }}>
-          Next: better generator + Stripe paywall + saved brand kits.
-        </div>
-      </div>
+                <div className="palette">
+                  {idea.palette.map((c) => (
+                    <div key={c} className="swatch" style={{ background: c }} title={c} />
+                  ))}
+                </div>
+
+                <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <button
+                    className="btn"
+                    onClick={() => navigator.clipboard.writeText(idea.name)}
+                  >
+                    Copy name
+                  </button>
+
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      const text = buildBrandKitText(idea);
+                      downloadText(`${idea.name.replace(/\s+/g, "_")}_brand_kit.txt`, text);
+                    }}
+                  >
+                    Download kit
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   );
 }
