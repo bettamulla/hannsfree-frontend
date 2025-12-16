@@ -1,65 +1,57 @@
 "use client";
-
-import { useMemo, useState } from "react";
-import { generateBrandIdeas } from "../lib/generateBrand";
-
-const styles = [
-  { key: "modern", label: "Modern" },
-  { key: "luxe", label: "Luxe" },
-  { key: "playful", label: "Playful" },
-  { key: "minimal", label: "Minimal" },
-  { key: "edgy", label: "Edgy" },
-];
+import { useState } from "react";
 
 export default function Page() {
-  const [name, setName] = useState("");
-  const [style, setStyle] = useState("modern");
-  const [count, setCount] = useState(24);
+  const [seed, setSeed] = useState("");
   const [results, setResults] = useState([]);
 
-  const canGenerate = name.trim().length > 0;
+  function generate() {
+    if (!seed) return;
 
-  const domainHints = useMemo(() => {
-    const base = name.trim().toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
-    if (!base) return [];
-    return [`${base}.com`, `${base}.co`, `${base}.ai`, `${base}.studio`].slice(0, 4);
-  }, [name]);
+    const suffixes = [
+      "Labs",
+      "Studio",
+      "Systems",
+      "Group",
+      "Works",
+      "Collective",
+      "HQ",
+      "Industries",
+      "Co"
+    ];
 
-  function onGenerate() {
-    setResults(generateBrandIdeas(name, { style, count }));
-  }
-
-  async function copyAll() {
-    const text = results.join("\n");
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {}
+    const output = suffixes.map(s => `${seed} ${s}`);
+    setResults(output);
   }
 
   return (
-    <div className="shell">
-      <header className="hero">
-        <div className="logo">HannsFree</div>
-        <div className="tag">Brand names that feel like they already exist.</div>
-      </header>
+    <main style={{ padding: 32, maxWidth: 640 }}>
+      <h1>HannsFree</h1>
+      <p>Brand names that feel like they already exist.</p>
 
-      <section className="card">
-        <div className="cardTitle">Generate</div>
+      <input
+        placeholder="e.g. Cognia, Puffer, Bettamulla"
+        value={seed}
+        onChange={e => setSeed(e.target.value)}
+        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+      />
 
-        <div className="row">
-          <label className="field">
-            <span>Brand seed</span>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Cognia, Puffer, Bettamulla"
-            />
-          </label>
+      <button onClick={generate} style={{ padding: 8 }}>
+        Generate
+      </button>
 
-          <button className="btnPrimary" onClick={onGenerate} disabled={!canGenerate}>
-            Generate
-          </button>
-        </div>
+      <ul style={{ marginTop: 16 }}>
+        {results.map(r => (
+          <li key={r}>{r}</li>
+        ))}
+      </ul>
+
+      <p style={{ marginTop: 24, opacity: 0.6 }}>
+        Next: AI mode + Stripe paywall + saved brand kits.
+      </p>
+    </main>
+  );
+}
 
         <div className="row row2">
           <label className="field">
