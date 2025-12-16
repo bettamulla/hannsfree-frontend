@@ -52,16 +52,6 @@ export default function Page() {
     </main>
   );
 }
-
-        <div className="row row2">
-          <label className="field">
-            <span>Style</span>
-            <select value={style} onChange={(e) => setStyle(e.target.value)}>
-              {styles.map((s) => (
-                <option key={s.key} value={s.key}>
-                  {s.label}
-                </option>
-              ))}
             </select>
           </label>
 
